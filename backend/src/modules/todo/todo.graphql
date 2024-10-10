@@ -1,0 +1,45 @@
+type Query {
+  todos(filter: TodoFilterInput, limit: Int, skip: Int): TodosResult
+  todo(id: ID!): Todo
+}
+
+type Mutation {
+  createTodo(input: CreateTodoInput!): Todo!
+  updateTodo(id: ID!, input: CreateTodoInput!): Boolean!
+}
+
+# ============= INPUT =============== #
+input TodoFilterInput {
+  status: TodoStatus
+}
+
+input CreateTodoInput {
+  title: String!
+  description: String
+  status: TodoStatus
+}
+
+# ============= ENUM =============== #
+enum TodoStatus {
+  READY
+  BLOCKED
+  IN_PROGRESS
+  DONE
+}
+
+# ============= TYPE =============== #
+type Todo {
+  id: ID!
+  title: String!
+  description: String
+  status: TodoStatus!
+  createdAt: DateTime
+  updatedAt: DateTime
+}
+
+type TodosResult {
+  result: [Todo]
+  totalCount: Int
+}
+
+scalar DateTime
