@@ -1,30 +1,23 @@
 import { Injectable } from '@nestjs/common';
 import { SignUpInput } from '../../graphql';
-import { InjectRepository } from '@nestjs/typeorm';
 import { UserRepository } from './user.repository';
-import { UserEntity } from './user.entity';
 
 @Injectable()
 export class UserService {
-  constructor(
-    @InjectRepository(UserRepository)
-    private readonly userRepository: UserRepository,
-  ) {}
+  constructor(private readonly userRepository: UserRepository) {}
 
   async createUser({ email, password }: SignUpInput): Promise<boolean> {
     const result = await this.userRepository.createUser(email, password);
     // Check if insert success
-    const id = result.identifiers[0].id;
+    const id = result.$response.data;
     return !!id;
   }
 
-  async getUserById(userId: string): Promise<UserEntity | undefined> {
+  async getUserById(userId: string) {
     return this.userRepository.getUserById(userId);
   }
 
-  async getUserByEmail(email: string): Promise<UserEntity | undefined> {
-    console.log('userRepository', this.userRepository);
-
+  async getUserByEmail(email: string) {
     return this.userRepository.getUserByEmail(email);
   }
 }

@@ -1,11 +1,15 @@
 import { Module } from '@nestjs/common';
 import { TodoResolver } from './todo.resolver';
 import { TodoService } from './todo.service';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { TodoRepository } from './todo.repository';
+import { DynamoDB } from 'aws-sdk';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([TodoRepository])],
-  providers: [TodoResolver, TodoService],
+  providers: [
+    DynamoDB.DocumentClient,
+    TodoRepository,
+    TodoResolver,
+    TodoService,
+  ],
 })
 export class TodoModule {}

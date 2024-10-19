@@ -22,10 +22,6 @@ class EnvironmentVariables {
   @ToNumber()
   PORT!: number;
 
-  @IsBoolean()
-  @ToBoolean()
-  OPEN_PLAYGROUND!: boolean;
-
   @IsString()
   SERVICE_NAME!: string;
 
@@ -43,20 +39,10 @@ class EnvironmentVariables {
   LOG_INLINE!: boolean;
 
   @IsString()
-  DB_HOST!: string;
-
-  @IsNumber()
-  @ToNumber()
-  DB_PORT!: number;
+  TODO_TABLE_NAME!: string;
 
   @IsString()
-  DB_USER!: string;
-
-  @IsString()
-  DB_PASSWORD!: string;
-
-  @IsString()
-  DB_NAME!: string;
+  USER_TABLE_NAME!: string;
 }
 
 export function validate(

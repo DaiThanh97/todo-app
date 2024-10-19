@@ -1,11 +1,10 @@
 import { Module } from '@nestjs/common';
+import { DynamoDB } from 'aws-sdk';
 import { UserService } from './user.service';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserRepository } from './user.repository';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([UserRepository])],
-  providers: [UserService],
-  exports: [UserService],
+  providers: [DynamoDB.DocumentClient, UserRepository, UserService],
+  exports: [UserRepository, UserService],
 })
 export class UserModule {}

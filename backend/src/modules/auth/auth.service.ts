@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import * as bcrypt from 'bcrypt';
+import * as argon from 'argon2';
 import { UserService } from '../user/user.service';
 import { JwtService } from '@nestjs/jwt';
 import { JwtPayload } from './auth.interface';
@@ -27,7 +27,7 @@ export class AuthService {
         throw new AuthError(NOT_AUTHENTICATED);
       }
 
-      const checkValidPassword = await bcrypt.compare(password, user.password);
+      const checkValidPassword = await argon.verify(user.password, password);
       if (!checkValidPassword) {
         throw new AuthError(NOT_AUTHENTICATED);
       }
@@ -59,9 +59,7 @@ export class AuthService {
       }
 
       // Hash password
-      const salt = await bcrypt.genSalt();
-      const hashedPassword = await bcrypt.hash(password, salt);
-
+      const hashedPassword = await argon.hash(password);
       return this.usersService.createUser({
         email,
         password: hashedPassword,

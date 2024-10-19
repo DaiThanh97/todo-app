@@ -1,16 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { TODO_NOT_FOUND, TODO_NOT_OWNED, TodoError } from './todo.error';
-import { InjectRepository } from '@nestjs/typeorm';
 import { TodoRepository } from './todo.repository';
 import { CreateTodoDto, TodoFilterDto, UpdateTodoDto } from './todo.dto';
 import { Todo, TodosResult } from 'src/graphql';
 
 @Injectable()
 export class TodoService {
-  constructor(
-    @InjectRepository(TodoRepository)
-    private readonly todoRepository: TodoRepository,
-  ) {}
+  constructor(private readonly todoRepository: TodoRepository) {}
 
   async todos(
     filter: TodoFilterDto,
@@ -40,7 +36,7 @@ export class TodoService {
         throw new TodoError(TODO_NOT_FOUND);
       }
 
-      if (todo.user.id !== userId) {
+      if (todo.userId !== userId) {
         throw new TodoError(TODO_NOT_OWNED);
       }
 
